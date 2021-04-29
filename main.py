@@ -2,16 +2,20 @@ import requests
 from pprint import pprint
 from os import sys
 
-# startDate = '2019-09-27'
+# startDate = '2021-05-01'
 startDate = sys.argv[1]
-phone_number = '177xxxxxxxx'
-passwd = 'password'
+phone_number = '18502177889'
+passwd = 'an666777'
 # authentication 需要在你登录网站之后的报文里面找，不会变
-authentication = '156xxxxxxxxxxxxxxxxxxxxxxx'
+authentication = '1619682562339839'
 # 起始站的 ID
 start_port_no = '1010'
 # 终点站的 ID，1014 是花鸟岛（只有这个岛需要抢吧）
-end_port_no = '1014'
+# 南浦 1046
+# 枸杞岛 1017
+# 嵊山岛 1016
+# 嵊泗本岛 1010
+end_port_no = '1016'
 
 accounts = [
     {
@@ -20,10 +24,10 @@ accounts = [
         'authentication': authentication,
         'passengers': [
             # passId 是乘客的 Id，在报文里面可以找到
-            {'passName': '某某某', 'credentialType': 1, 'passId': 111},
-            {'passName': '某某某', 'credentialType': 1, 'passId': 222},
+            {'passName': '邓平安', 'credentialType': 1, 'passId': 1731062},
+            # {'passName': '某某某', 'credentialType': 1, 'passId': 222},
         ],
-        'seatNeed': 2,
+        'seatNeed': 1,
     },
 ]
 
@@ -34,15 +38,15 @@ for account in accounts:
         passengers = account['passengers']
 
         print('===================Login Info============================')
-        print(login_res)
+        # print(login_res)
         userid = login_res['data']['userId']
         token = login_res['data']['token']
 
         def get(url, params={}):
-            print('GET to', url)
+            # print('GET to', url)
             token_check_res = requests.get('https://www.ssky123.com/api/v2/user/tokenCheck', headers={'authentication': authentication, 'token': token}).json()
             res = requests.get(url, headers={'authentication': account['authentication'], 'token': token}, params=params).json()
-            print('Response :', res)
+            # print('Response :', res)
             print()
             return res
 
@@ -50,7 +54,7 @@ for account in accounts:
             print('GET to', url)
             token_check_res = requests.get('https://www.ssky123.com/api/v2/user/tokenCheck', headers={'authentication': authentication, 'token': token}).json()
             res =  requests.post(url, headers={'authentication': account['authentication'], 'token': token}, json=params).json()
-            print('Response :', res)
+            # print('Response :', res)
             print()
             return res
 
@@ -74,7 +78,7 @@ for account in accounts:
 
         #  route = query_ticket_res['data'][0]
         print('\nroute:\n')
-        pprint(route)
+        # pprint(route)
         if route is not None:
             seat = None
             for s in route['seatClasses'][::-1]:
@@ -83,7 +87,10 @@ for account in accounts:
             print('===================Seat Info============================')
             print('\nseat:\n')
             if seat is not None:
+                pprint("========seat-getting======")
                 pprint(seat)
+                # code = 200
+
 
                 orderItemRequests = []
                 for p in passengers:
@@ -94,7 +101,7 @@ for account in accounts:
                     p['ticketFee'] = seat['totalPrice']
                     orderItemRequests.append(p)
                 print('===================Order Info============================')
-                print(orderItemRequests)
+                # print(orderItemRequests)
 
                 order = route
                 order['orderItemRequests'] = orderItemRequests
@@ -103,8 +110,10 @@ for account in accounts:
                 order['totalFee'] = seat['totalPrice'] * len(passengers)
                 order['totalPayFee'] = seat['totalPrice'] * len(passengers)
                 order['sailDate'] = startDate
-                pprint(order)
+                # pprint(order)
                 res = post('https://www.ssky123.com/api/v2/holding/save', order)
+                pprint(res)
+
                 code = res['code']
 
-                post('https://www.ssky123.com/api/v2/user/loginOut')
+                # post('https://www.ssky123.com/api/v2/user/loginOut')
