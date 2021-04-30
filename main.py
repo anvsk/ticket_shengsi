@@ -33,7 +33,7 @@ account = {
 
 code = 0
 while code != 200:
-    time.sleep(1)
+    # time.sleep(1)
     print('... ....')
     login_res = requests.post('https://www.ssky123.com/api/v2/user/passLogin?phoneNum=' + account['phoneNum'] + '&passwd=' + account['passwd'] + '&deviceType=2').json()
     passengers = account['passengers']
@@ -52,7 +52,6 @@ while code != 200:
         return res
 
     def post(url, params={}):
-        pprint(params)
         chekcToken()
         res =  requests.post(url, headers={'authentication': account['authentication'], 'token': token}, json=params).json()
         return res
@@ -95,7 +94,7 @@ while code != 200:
         ii = 0
         for s in tr['seatClasses'][::-1]:
             # notice localCurrentCount>0 but pubCurrentCount=0 
-            if s['localCurrentCount'] >= account['seatNeed']:
+            if s['localCurrentCount'] >= 1:
                 print(tr['lineNum'],tr['sx'],'>localCurrentCount:',s['localCurrentCount'],'>className:',s['className'],'>pubCurrentCount:',s['pubCurrentCount'])
             # if checkSeat(s) is true:
             #     seatIndex = ii
