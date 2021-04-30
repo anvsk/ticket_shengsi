@@ -5,6 +5,7 @@ import yaml
 import os
 import argparse
 import time
+import json
 
 # load config  
 fileNamePath = os.path.split(os.path.realpath(__file__))[0]
@@ -30,9 +31,15 @@ account = {
         'seatNeed': 0,
     }
 
+def notice(sss):
+    if cf['Notice']['flag'] is False:
+        return
+    pyload = {"msgtype": "text", "text": {"content":json.dumps(sss,sort_keys=True, indent=2).encode('utf-8').decode('unicode_escape')}}
+    requests.post(cf['Notice']['companyWx'], data=json.dumps(pyload),headers={"Content-Type": "application/json; charset=UTF-8"})
 
 code = 0
-while code != 200:
+errors = 0
+while code != 200 and errors<10:
     # time.sleep(1)
     print('... ....')
     login_res = requests.post('https://www.ssky123.com/api/v2/user/passLogin?phoneNum=' + account['phoneNum'] + '&passwd=' + account['passwd'] + '&deviceType=2').json()
@@ -70,11 +77,11 @@ while code != 200:
 
     def checkSeat(s):
         if args.className!='' and s['className']==args.className:
-            return false
+            return False
         
         if s['pubCurrentCount'] >= 1:
-            return true
-        return false
+            return True
+        return False
 
     query_ticket_res = post('https://www.ssky123.com/api/v2/line/ship/enq',
                             {
@@ -96,13 +103,7 @@ while code != 200:
             # notice localCurrentCount>0 but pubCurrentCount=0 
             if s['localCurrentCount'] >= 1:
                 print(tr['lineNum'],tr['sx'],'>localCurrentCount:',s['localCurrentCount'],'>className:',s['className'],'>pubCurrentCount:',s['pubCurrentCount'])
-            # if checkSeat(s) is true:
-            #     seatIndex = ii
-            #     route = tr
-            #     break
-            if args.className!='' and s['className']==args.className:
-                continue
-            if s['pubCurrentCount'] >= len(cf['User']['passengers']):
+            if checkSeat(s) is True:
                 seatIndex = ii
                 route = tr
                 break
@@ -113,9 +114,11 @@ while code != 200:
     if route is not None:
         print('===================Route Info============================')
         pprint(route)
+        notice(route)
         seat = route['seatClasses'][seatIndex]
         print('===================Seat Info============================')
         pprint(seat)
+        notice(seat)
         getPassengers()
         orderItemRequests = []
         for p in passengers:
@@ -135,7 +138,9 @@ while code != 200:
         order['sailDate'] = args.date
         res = post('https://www.ssky123.com/api/v2/holding/save', order)
         pprint(res)
+        notice(res)
         code = res['code']
+        errors+=1
 
 
 

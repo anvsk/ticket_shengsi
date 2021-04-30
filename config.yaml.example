@@ -35,7 +35,8 @@ PortNo:
   gouqi: 1017
 
 Notice:
-  companyWx:""
+  flag: false
+  companyWx: ""
 
 
 
