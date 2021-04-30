@@ -1,15 +1,21 @@
 # 嵊泗抢票脚本
+## 由于想去嵊泗玩，无赖票太难抢了，写了个脚本自动抢票
+
 
 2021-04-29已测可用
 
-
-  - 一次订单只能买三个人的票。如果有四个人的话，要拆成两个。
-
-
-  - 这个脚本不管付款，你还是需要起个大早手动付款。
+  - 抢票后订单几分钟就失效了，请尽快付款
 
 
 ### 运行
 
-  python3 main.py 1 shengshan
+  #南浦到花鸟岛
+  python3 main.py -f nanpu -t huaniao 
+
+
+## 或许该项目可以帮到你哦！
+![image](https://github.com/anvsk/ticket_shengsi/IMG_6014.JPG)
+
+
+ContactMe anvskyi@gmail.com
 

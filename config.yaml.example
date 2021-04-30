@@ -1,0 +1,41 @@
+# 登录用
+User:
+  mobile :  '185xxx89'
+  password: 'xxx'
+  # 登录后再请求报文可以看到
+  authentication :  'xxx'
+  # 指定乘客信息[不填默认所有联系人]
+  passengers:
+    # - 张三
+    
+# 出发点
+From: nanpu
+# 到达点
+To: shengshan
+# 购买日期
+Date: '2021-05-01'
+
+# 定制化
+Customization:
+  # 汽车最晚的开车时间
+  LatestBusTime: ''
+  # 船最晚的开车时间
+  LatestShipTime: ''
+  # 指定航班
+  LineNum: ''
+  # 指定舱位
+  Class: ''
+
+# 目的地字典
+PortNo:
+  nanpu: 1046
+  shengshan: 1016
+  shengsi: 1010
+  huaniao: 1014
+  gouqi: 1017
+
+Notice:
+  companyWx:""
+
+
+
