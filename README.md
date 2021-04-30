@@ -14,7 +14,7 @@
 
 
 ## 或许该项目可以帮到你哦！
-![image](https://github.com/anvsk/ticket_shengsi/blob/main/IMG_6014.JPG){:height="100px" width="100px"}
+![image](https://github.com/anvsk/ticket_shengsi/blob/main/IMG_6014.JPG){:height="100px" width=10%}
 
 
 ContactMe anvskyi@gmail.com
